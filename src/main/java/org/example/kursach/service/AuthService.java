@@ -13,6 +13,7 @@ import org.example.kursach.repository.SystemUserRepository;
 import org.example.kursach.security.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,7 @@ public class AuthService {
                 .withUsername(user.getUsername())
                 .password(user.getPasswordHash())
                 .authorities(user.getRoles().stream()
-                        .map(r -> "ROLE_" + r.name())
+                        .map(r -> new SimpleGrantedAuthority("ROLE_" + r.name()))
                         .toList())
                 .accountExpired(false)
                 .accountLocked(!user.isActive())
